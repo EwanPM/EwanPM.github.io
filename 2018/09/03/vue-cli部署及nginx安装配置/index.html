@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="博客,vue-cli,nginx,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="开始之前这博客用的vue+node编写的，webpack做好打包文件之后，在项目文件夹下生成dist(webpack 3.0以上)文件，这个文件夹就是要部署的文件目录，另外，server文件需要单独上传，与dist同目录。 安装Nginxnginx是一款轻量级高性能HTTP和反向代理服务，在阿里注册了一个域名之后，可以无限的生成二级，三级，四级域名，对应不同项目目录。 在VPS服务器上需要下面三个">
+<meta name="keywords" content="博客,vue-cli,nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue-cli部署及nginx安装配置">
+<meta property="og:url" content="https://ewanpm.github.io/2018/09/03/vue-cli部署及nginx安装配置/index.html">
+<meta property="og:site_name" content="寓言家">
+<meta property="og:description" content="开始之前这博客用的vue+node编写的，webpack做好打包文件之后，在项目文件夹下生成dist(webpack 3.0以上)文件，这个文件夹就是要部署的文件目录，另外，server文件需要单独上传，与dist同目录。 安装Nginxnginx是一款轻量级高性能HTTP和反向代理服务，在阿里注册了一个域名之后，可以无限的生成二级，三级，四级域名，对应不同项目目录。 在VPS服务器上需要下面三个">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/0069RVTdgy1fuvn0yzxwyj30fm0b73yj.jpg">
+<meta property="og:image" content="https://ws4.sinaimg.cn/large/0069RVTdgy1fuvn6q9cvoj30dj041745.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/0069RVTdgy1fuvn6zfcskj30pn02pjrg.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/0069RVTdgy1fuvn7lcgmij308y0350sk.jpg">
+<meta property="og:updated_time" content="2018-12-19T14:16:41.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue-cli部署及nginx安装配置">
+<meta name="twitter:description" content="开始之前这博客用的vue+node编写的，webpack做好打包文件之后，在项目文件夹下生成dist(webpack 3.0以上)文件，这个文件夹就是要部署的文件目录，另外，server文件需要单独上传，与dist同目录。 安装Nginxnginx是一款轻量级高性能HTTP和反向代理服务，在阿里注册了一个域名之后，可以无限的生成二级，三级，四级域名，对应不同项目目录。 在VPS服务器上需要下面三个">
+<meta name="twitter:image" content="https://ws3.sinaimg.cn/large/0069RVTdgy1fuvn0yzxwyj30fm0b73yj.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'AAT03GNZE0',
+      apiKey: '3f986131090bed5763cca0e4495f2c4b',
+      indexName: 'ewan_home',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"请搜索关键字","hits_empty":"没有找到结果: ${query}","hits_stats":"找到${hits}条结果(用时${time}ms)"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ewanpm.github.io/2018/09/03/vue-cli部署及nginx安装配置/">
+
+
+
+
+
+  <title>vue-cli部署及nginx安装配置 | 寓言家</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43156ff9085f8a3c0ec8ef149136726d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">寓言家</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ewanpm.github.io/2018/09/03/vue-cli部署及nginx安装配置/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="寓言家">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寓言家">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue-cli部署及nginx安装配置</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T00:24:09+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/03/vue-cli部署及nginx安装配置/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/03/vue-cli部署及nginx安装配置/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/03/vue-cli部署及nginx安装配置/" class="leancloud_visitors" data-flag-title="vue-cli部署及nginx安装配置">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.9k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8min
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h4><p>这博客用的vue+node编写的，webpack做好打包文件之后，在项目文件夹下生成dist(webpack 3.0以上)文件，这个文件夹就是要部署的文件目录，另外，server文件需要单独上传，与dist同目录。</p>
+<h4 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h4><p>nginx是一款轻量级高性能HTTP和反向代理服务，在阿里注册了一个域名之后，可以无限的生成二级，三级，四级域名，对应不同项目目录。</p>
+<p>在VPS服务器上需要下面三个依赖包:</p>
+<ol>
+<li>SSL功能需要openssl库，下载地址 <a href="http://www.openssl.org/" target="_blank" rel="noopener">http://www.openssl.org/</a></li>
+<li>rewrite模块需要pcre库，下载地址 <a href="http://www.pcre.org/" target="_blank" rel="noopener">http://www.pcre.org/</a></li>
+<li>gzip模块需要zlib库，下载地址 <a href="http://www.zlib.net/" target="_blank" rel="noopener">http://www.zlib.net/</a></li>
+<li>Nginx安装包</li>
+</ol>
+<p>进入任意目录下载以上压缩包(版本号改为最新即可)：</p>
+<p>注意各个目录下的是 configure 还是 config </p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@host zlib<span class="number">-1.2</span><span class="number">.11</span>]# ./configuer</span><br><span class="line">[root@host zlib<span class="number">-1.2</span><span class="number">.11</span>]# make</span><br><span class="line">[root@host zlib<span class="number">-1.2</span><span class="number">.11</span>]# make install</span><br><span class="line">[root@host pcre<span class="number">-8.41</span>]# ./configuer</span><br><span class="line">[root@host zlib<span class="number">-1.2</span><span class="number">.11</span>]# make</span><br><span class="line">[root@host zlib<span class="number">-1.2</span><span class="number">.11</span>]# make install</span><br><span class="line">[root@host openssl-fips<span class="number">-2.0</span><span class="number">.16</span>]# ./config</span><br><span class="line">[root@host zlib<span class="number">-1.2</span><span class="number">.11</span>]# make</span><br><span class="line">[root@host zlib<span class="number">-1.2</span><span class="number">.11</span>]# make install</span><br><span class="line">[root@host nginx<span class="number">-1.13</span><span class="number">.7</span>]# ./configure --with-pcre=../pcre<span class="number">-8.41</span>/ --with-zlib=../zlib<span class="number">-1.2</span><span class="number">.11</span>/ --with-openssl=../openssl-fips<span class="number">-2.0</span><span class="number">.16</span>/ [root@host nginx<span class="number">-1.13</span><span class="number">.7</span>]# make</span><br><span class="line">[root@host zlib<span class="number">-1.2</span><span class="number">.11</span>]# make install</span><br></pre></td></tr></table></figure>
+<p>安装3个依赖包，分别进入各自解压目录</p>
+<p><u>注意：安装 C++ 编译环境 （上面安装过程中如若有报错，可以看看是不是因为没有安装这个，可提前安装）</u></p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">yum</span> <span class="comment">install</span> <span class="comment">gcc</span><span class="literal">-</span><span class="comment">c</span><span class="literal">+</span><span class="literal">+</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@host ~]# <span class="keyword">cd</span> /usr/<span class="keyword">local</span>/nginx</span><br><span class="line">[root@host nginx]# <span class="keyword">ls</span></span><br><span class="line">client_body_temp  <span class="keyword">conf</span>  fastcgi_temp  html  logs  nginx.<span class="keyword">conf</span>  proxy_temp  sbin  scgi_temp  uwsgi_temp</span><br></pre></td></tr></table></figure>
+<p>安装好的Nginx路径在 /usr/local/nginx</p>
+<p>配置文件路径：</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="keyword">local</span>/nginx/<span class="keyword">conf</span>/nginx.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+<h4 id="运行Nginx"><a href="#运行Nginx" class="headerlink" title="运行Nginx"></a>运行Nginx</h4><figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@host</span>~]<span class="meta"># cd /usr/local/nginx/sbin</span></span><br><span class="line">[root<span class="symbol">@hostsbin]</span><span class="meta"># ./nginx</span></span><br><span class="line">// 查看是否运行成功</span><br><span class="line">[root<span class="symbol">@hostsbin]</span><span class="meta"># netstat -ntlp</span></span><br><span class="line">Active Internet connections (only servers)</span><br><span class="line">Proto Recv-Q <span class="built_in">Send</span>-Q <span class="keyword">Local</span> Address           Foreign Address         State       PID/Program name</span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">80</span>              <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:*               LISTEN      <span class="number">3525</span>/nginx: master</span><br></pre></td></tr></table></figure>
+<p>安装成功的话，浏览器输入 IP 地址或域名即可见到欢迎页面。</p>
+<h4 id="使用server命令启动nginx命令"><a href="#使用server命令启动nginx命令" class="headerlink" title="使用server命令启动nginx命令"></a>使用server命令启动nginx命令</h4><p>现在nginx启动、关闭比较麻烦，关闭要找到PID号，然后杀死进程，启动要进入到 /usr/local/nginx/sbin 目录下使用命令，为此我们通过设置System V脚本来使用server命令启动、关闭、重启nginx服务。 </p>
+<p>1.在 /etc/init.d 目录下创建nginx启动脚本文件</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@host</span> ~]<span class="meta"># cd /etc/init.d</span></span><br><span class="line">[root<span class="symbol">@host</span> init.d]<span class="meta"># vi nginx</span></span><br></pre></td></tr></table></figure>
+<p>2.将以下代码复制粘贴，保存。 注意 NGINX_BIN、CONFIGFILE、PIDFILE 三个目录要对应好，默认是对应好的。在网上找了好多相关脚本代码，都有很多问题，好像是和 CentOS 版本有关，下面脚本我在 CentOS 7 下使用正常，直接从服务器下载用sublime编辑，效率比在vps上vi编译高多了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/sh</span></span><br><span class="line"> <span class="comment"># chkconfig: 2345 55 25</span></span><br><span class="line"> <span class="comment"># Description: Startup script for nginx webserver on Debian. Place in /etc/init.d and</span></span><br><span class="line"> <span class="comment"># run 'update-rc.d -f nginx defaults', or use the appropriate command on your</span></span><br><span class="line"> <span class="comment"># distro. For CentOS/Redhat run: 'chkconfig --add nginx'</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment">### BEGIN INIT INFO</span></span><br><span class="line"> <span class="comment"># Provides:          nginx</span></span><br><span class="line"> <span class="comment"># Required-Start:    $all</span></span><br><span class="line"> <span class="comment"># Required-Stop:     $all</span></span><br><span class="line"> <span class="comment"># Default-Start:     2 3 4 5</span></span><br><span class="line"> <span class="comment"># Default-Stop:      0 1 6</span></span><br><span class="line"> <span class="comment"># Short-Description: starts the nginx web server</span></span><br><span class="line"> <span class="comment"># Description:       starts nginx using start-stop-daemon</span></span><br><span class="line"> <span class="comment">### END INIT INFO</span></span><br><span class="line"> </span><br><span class="line"> <span class="comment"># Author:   licess</span></span><br><span class="line"> <span class="comment"># website:  http://lnmp.org</span></span><br><span class="line"> </span><br><span class="line"> PATH=/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/sbin:/bin:/usr/sbin:/usr/bin</span><br><span class="line"> NAME=nginx</span><br><span class="line"> NGINX_BIN=/usr/<span class="built_in">local</span>/nginx/sbin/<span class="variable">$NAME</span></span><br><span class="line"> CONFIGFILE=/usr/<span class="built_in">local</span>/nginx/conf/<span class="variable">$NAME</span>.conf</span><br><span class="line"> PIDFILE=/usr/<span class="built_in">local</span>/nginx/logs/<span class="variable">$NAME</span>.pid</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span></span><br><span class="line">     start)</span><br><span class="line">         <span class="built_in">echo</span> -n <span class="string">"Starting <span class="variable">$NAME</span>... "</span></span><br><span class="line"> </span><br><span class="line">         <span class="keyword">if</span> netstat -tnpl | grep -q nginx;<span class="keyword">then</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">"<span class="variable">$NAME</span> (pid `pidof <span class="variable">$NAME</span>`) already running."</span></span><br><span class="line">             <span class="built_in">exit</span> 1</span><br><span class="line">         <span class="keyword">fi</span></span><br><span class="line"> </span><br><span class="line">         <span class="variable">$NGINX_BIN</span> -c <span class="variable">$CONFIGFILE</span></span><br><span class="line"> </span><br><span class="line">         <span class="keyword">if</span> [ <span class="string">"$?"</span> != 0 ] ; <span class="keyword">then</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">" failed"</span></span><br><span class="line">             <span class="built_in">exit</span> 1</span><br><span class="line">         <span class="keyword">else</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">" done"</span></span><br><span class="line">         <span class="keyword">fi</span></span><br><span class="line">         ;;</span><br><span class="line"> </span><br><span class="line">     stop)</span><br><span class="line">         <span class="built_in">echo</span> -n <span class="string">"Stoping <span class="variable">$NAME</span>... "</span></span><br><span class="line"> </span><br><span class="line">         <span class="keyword">if</span> ! netstat -tnpl | grep -q nginx; <span class="keyword">then</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">"<span class="variable">$NAME</span> is not running."</span></span><br><span class="line">             <span class="built_in">exit</span> 1</span><br><span class="line">         <span class="keyword">fi</span></span><br><span class="line"> </span><br><span class="line">         <span class="variable">$NGINX_BIN</span> -s stop</span><br><span class="line"> </span><br><span class="line">         <span class="keyword">if</span> [ <span class="string">"$?"</span> != 0 ] ; <span class="keyword">then</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">" failed. Use force-quit"</span></span><br><span class="line">             <span class="built_in">exit</span> 1</span><br><span class="line">         <span class="keyword">else</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">" done"</span></span><br><span class="line">         <span class="keyword">fi</span></span><br><span class="line">         ;;</span><br><span class="line"> </span><br><span class="line">     status)</span><br><span class="line">         <span class="keyword">if</span> netstat -tnpl | grep -q nginx; <span class="keyword">then</span></span><br><span class="line">             PID=`pidof nginx`</span><br><span class="line">             <span class="built_in">echo</span> <span class="string">"<span class="variable">$NAME</span> (pid <span class="variable">$PID</span>) is running..."</span></span><br><span class="line">         <span class="keyword">else</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">"<span class="variable">$NAME</span> is stopped"</span></span><br><span class="line">             <span class="built_in">exit</span> 0</span><br><span class="line">         <span class="keyword">fi</span></span><br><span class="line">         ;;</span><br><span class="line"> </span><br><span class="line">     force-quit)</span><br><span class="line">         <span class="built_in">echo</span> -n <span class="string">"Terminating <span class="variable">$NAME</span>... "</span></span><br><span class="line"> </span><br><span class="line">         <span class="keyword">if</span> ! netstat -tnpl | grep -q nginx; <span class="keyword">then</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">"<span class="variable">$NAME</span> is not running."</span></span><br><span class="line">             <span class="built_in">exit</span> 1</span><br><span class="line">         <span class="keyword">fi</span></span><br><span class="line"> </span><br><span class="line">         <span class="built_in">kill</span> `pidof <span class="variable">$NAME</span>`</span><br><span class="line"> </span><br><span class="line">         <span class="keyword">if</span> [ <span class="string">"$?"</span> != 0 ] ; <span class="keyword">then</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">" failed"</span></span><br><span class="line">             <span class="built_in">exit</span> 1</span><br><span class="line">         <span class="keyword">else</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">" done"</span></span><br><span class="line">         <span class="keyword">fi</span></span><br><span class="line">         ;;</span><br><span class="line"> </span><br><span class="line">     restart)</span><br><span class="line">         <span class="variable">$0</span> stop</span><br><span class="line">         sleep 1</span><br><span class="line">         <span class="variable">$0</span> start</span><br><span class="line">         ;;</span><br><span class="line"> </span><br><span class="line">     reload)</span><br><span class="line">         <span class="built_in">echo</span> -n <span class="string">"Reload service <span class="variable">$NAME</span>... "</span></span><br><span class="line"> </span><br><span class="line">         <span class="keyword">if</span> netstat -tnpl | grep -q nginx; <span class="keyword">then</span></span><br><span class="line">             <span class="variable">$NGINX_BIN</span> -s reload</span><br><span class="line">             <span class="built_in">echo</span> <span class="string">" done"</span></span><br><span class="line">         <span class="keyword">else</span></span><br><span class="line">             <span class="built_in">echo</span> <span class="string">"<span class="variable">$NAME</span> is not running, can't reload."</span></span><br><span class="line">             <span class="built_in">exit</span> 1</span><br><span class="line">         <span class="keyword">fi</span></span><br><span class="line">         ;;</span><br><span class="line"> </span><br><span class="line">     configtest)</span><br><span class="line">         <span class="built_in">echo</span> -n <span class="string">"Test <span class="variable">$NAME</span> configure files... "</span></span><br><span class="line"> </span><br><span class="line">         <span class="variable">$NGINX_BIN</span> -t</span><br><span class="line">         ;;</span><br><span class="line"> </span><br><span class="line">     *)</span><br><span class="line">         <span class="built_in">echo</span> <span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop|force-quit|restart|reload|status|configtest&#125;"</span></span><br><span class="line">         <span class="built_in">exit</span> 1</span><br><span class="line">         ;;</span><br><span class="line"> </span><br><span class="line"> <span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+<p>3.修改脚本权限 </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x <span class="regexp">/etc/i</span>nit.d<span class="regexp">/nginx</span></span><br></pre></td></tr></table></figure>
+<p>4.注册成服务</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --<span class="keyword">add</span><span class="bash"> nginx</span></span><br></pre></td></tr></table></figure>
+<p>5.设置开机启动</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig nginx <span class="keyword">on</span></span><br></pre></td></tr></table></figure>
+<p>这样就可以在任意目录通过service启动、关闭nginx</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@host ~]#<span class="built_in"> service </span>nginx start</span><br><span class="line">[root@host ~]#<span class="built_in"> service </span>nginx stop</span><br><span class="line">[root@host ~]#<span class="built_in"> service </span>nginx restart</span><br></pre></td></tr></table></figure>
+<h4 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h4><p>进入nginx下的conf，用编译器打开配置文件nginx.conf，这里下载到本地用sublime打开，方便修改，一般都是修改server里面的内容</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> /usr/<span class="keyword">local</span>/nginx/<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+<p>前后端分离，Ajax api接口跨域，node代理和nginx代理</p>
+<p>这个博客数据请求服务是用node.js写的，会出现跨域，本地测试的时候在build/config/index.js加入以下语句实现代理 </p>
+<p>node服务器，在本地测试的时候用的跨域设置 </p>
+<p><img src="https://ws3.sinaimg.cn/large/0069RVTdgy1fuvn0yzxwyj30fm0b73yj.jpg" alt=""></p>
+<p>1.<code>比如`</code>ajax<code>接口&quot;/getArticle&quot;</code>，本地”localhost：8080/getArticle”<code></code>，有接口跨域的问题。`</p>
+<p>2.localhost:8080 <code>=&gt; http:</code>//localhost:3000/api，本地开启服务器实现代理。</p>
+<p>在nginx服务器配置文件nginx.conf：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span>  <span class="number">80</span>; <span class="comment">#本地端口</span></span><br><span class="line">        <span class="attribute">server_name</span> localhost;</span><br><span class="line">        <span class="attribute">location</span>  ~*/get*|post* &#123; <span class="comment">#nginx正则匹配(可高度自定义)</span></span><br><span class="line">            <span class="attribute">proxy_pass</span> http://127.0.0.1:3000; <span class="comment">#反向代理         </span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比如ajax接口”/getArticle”，本地”localhost：80/getArticle”，有跨域的问题。</p>
+<p>localhost:80 =&gt; <a href="http://127.0.0.1:3000" target="_blank" rel="noopener">http://127.0.0.1:3000</a> 本地开启服务器实现代理</p>
+<p>nginx反向代理更多配置查询<a href="http://www.nginx.cn/115.html" target="_blank" rel="noopener">http://www.nginx.cn/115.html</a></p>
+<p>注意nginx上写发与本地测试不一样，本地代理服务失效，如果直接location 下写，还是无法通过api获取数据库数据，因为找不到地址，</p>
+<p><img src="https://ws4.sinaimg.cn/large/0069RVTdgy1fuvn6q9cvoj30dj041745.jpg" alt=""></p>
+<p><img src="https://ws2.sinaimg.cn/large/0069RVTdgy1fuvn6zfcskj30pn02pjrg.jpg" alt=""></p>
+<p>因此要对location匹配正则，获得正确地址</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">location</span>  <span class="title">~*/get</span>*|post* &#123;</span><br><span class="line">    proxy_pass http://<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">3000</span>;</span><br><span class="line">&#125;</span><br><span class="line">//也可以这么写</span><br><span class="line"><span class="keyword">location</span> <span class="title">/api</span></span><br></pre></td></tr></table></figure>
+<p>向后端express, api请求数据</p>
+<h4 id="HTML-5-History模式"><a href="#HTML-5-History模式" class="headerlink" title="HTML 5 History模式"></a>HTML 5 History模式</h4><p><code>vue-router</code> 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，于是当 URL 改变时，页面不会重新加载。</p>
+<p>相当于请求的是虚拟地址，需要后台设置nginx支持，即就是将所有的前端目录下的请求，统统传到前端index文件上，做路由分发。</p>
+<p>这个vue项目使用了HTML 5 History 模式，为了把url的”#”去掉，即在路由设置history模式 </p>
+<p><img src="https://ws3.sinaimg.cn/large/0069RVTdgy1fuvn7lcgmij308y0350sk.jpg" alt=""></p>
+<p>因此会遇到问题，进入首页的时候可以正常访问，一旦在浏览器地址栏输入其他地址或者刷新就会出现404问题，因为vue路由编译的dist并没有真正把资源提供给nginx或者其他服务器，所以，需要转交vue-router来做前端路由 </p>
+<p>所以还需要向nginx添加 </p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个也是来自VUE官方文档，对nginx的配置，其他类型服务器也有对应设置</p>
+<p><a href="https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E5%90%8E%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BE%8B%E5%AD%90" target="_blank" rel="noopener">VUE H5 History配置</a></p>
+<p>至此整个部署已经完毕，nginx.conf设置server部分如下</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">        <span class="attribute">server_name</span>  ewanzheng.top;</span><br><span class="line">        <span class="attribute">charset</span> utf-<span class="number">8</span>;</span><br><span class="line">        <span class="attribute">root</span> /usr/local/nginx/html/yublog/dist;<span class="comment">#上传后放在服务器上的项目地址</span></span><br><span class="line">        <span class="attribute">index</span> index.html index.htm;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">location</span> <span class="regexp"> ^~/api</span> &#123;</span><br><span class="line">            <span class="attribute">proxy_pass</span> http://127.0.0.1:3000;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">location</span> / &#123;</span><br><span class="line">            <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.html;</span><br><span class="line">            <span class="attribute">proxy_redirect</span>    <span class="literal">off</span>;</span><br><span class="line">            <span class="attribute">proxy_set_header</span>  Host              <span class="variable">$http_host</span>;</span><br><span class="line">            <span class="attribute">proxy_set_header</span>  X-Real-IP         <span class="variable">$remote_addr</span>;</span><br><span class="line">            <span class="attribute">proxy_set_header</span>  X-Forwarded-For   <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">            <span class="comment">#proxy_set_header  X-Forwarded-Proto $scheme;</span></span><br><span class="line">            <span class="comment">#proxy_set_header X-Nginx-Proxt true;</span></span><br><span class="line">            <span class="attribute">error_page</span> <span class="number">404</span> /index.html;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>重启服务器，页面就可以正常访问了，API也能正常拿到</p>
+<p>参考资料</p>
+<p><a href="http://cl8023.com/#/blog/article/2/vue+node%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%88%B0%E9%83%A8%E7%BD%B2%E4%B8%8A%E7%BA%BF%EF%BC%88%E9%83%A8%E7%BD%B2%E4%B8%8A%E7%BA%BF%EF%BC%89" target="_blank" rel="noopener">vue+node部署上线</a></p>
+<p><a href="https://segmentfault.com/a/1190000012960641" target="_blank" rel="noopener">前后端分离，ajax api接口跨域，node代理和nginx代理</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/博客/" rel="tag"># 博客</a>
+          
+            <a href="/tags/vue-cli/" rel="tag"># vue-cli</a>
+          
+            <a href="/tags/nginx/" rel="tag"># nginx</a>
+          
+        </div>
+      
+      
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/02/centos7安装mysql-5-7-19/" rel="next" title="centos7安装mysql 5.7.19">
+                <i class="fa fa-chevron-left"></i> centos7安装mysql 5.7.19
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/12/Hexo + GitHub搭建博客/" rel="prev" title="Hexo + Next主题 + GitHub搭建博客">
+                Hexo + Next主题 + GitHub搭建博客 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">寓言家</p>
+              <p class="site-description motion-element" itemprop="description">写点东西，留下一些足迹</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/EwanPM" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:ewanzheng2012@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/2656703853/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#开始之前"><span class="nav-number">1.</span> <span class="nav-text">开始之前</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Nginx"><span class="nav-number">2.</span> <span class="nav-text">安装Nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行Nginx"><span class="nav-number">3.</span> <span class="nav-text">运行Nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用server命令启动nginx命令"><span class="nav-number">4.</span> <span class="nav-text">使用server命令启动nginx命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置nginx"><span class="nav-number">5.</span> <span class="nav-text">配置nginx</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTML-5-History模式"><span class="nav-number">6.</span> <span class="nav-text">HTML 5 History模式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寓言家</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 Hexo 强力驱动</div>
+
+
+
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+     
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'kFSOq8nB5wXJlUQJNpR9Mf3m-gzGzoHsz',
+        appKey: 'wWej8m4TRUsQ9gdJuUSXtJo3',
+        placeholder: '大宝贝儿，欢迎来吐槽',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("kFSOq8nB5wXJlUQJNpR9Mf3m-gzGzoHsz", "wWej8m4TRUsQ9gdJuUSXtJo3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
