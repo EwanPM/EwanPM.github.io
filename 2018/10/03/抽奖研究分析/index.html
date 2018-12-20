@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="抽奖,java,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言只要是营销的场景，肯定逃不脱抽奖，研究好抽奖可以说是必修课之一，算法也是多种多样，这次以奖品的权重来抽奖。 奖品设置奖品实体必须含有两个字段，一个用于区分的奖品名称/ID；一个奖品权重请看表格，进行如下设置">
+<meta name="keywords" content="抽奖,java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="抽奖研究分析">
+<meta property="og:url" content="https://ewanpm.github.io/2018/10/03/抽奖研究分析/index.html">
+<meta property="og:site_name" content="寓言家">
+<meta property="og:description" content="前言只要是营销的场景，肯定逃不脱抽奖，研究好抽奖可以说是必修课之一，算法也是多种多样，这次以奖品的权重来抽奖。 奖品设置奖品实体必须含有两个字段，一个用于区分的奖品名称/ID；一个奖品权重请看表格，进行如下设置">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fvuqarzihej30bu02ddfn.jpg">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNbRwgy1fvu5uy3xl4j30jl072glh.jpg">
+<meta property="og:updated_time" content="2018-12-20T14:35:30.929Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="抽奖研究分析">
+<meta name="twitter:description" content="前言只要是营销的场景，肯定逃不脱抽奖，研究好抽奖可以说是必修课之一，算法也是多种多样，这次以奖品的权重来抽奖。 奖品设置奖品实体必须含有两个字段，一个用于区分的奖品名称/ID；一个奖品权重请看表格，进行如下设置">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNbRwgy1fvuqarzihej30bu02ddfn.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'AAT03GNZE0',
+      apiKey: '3f986131090bed5763cca0e4495f2c4b',
+      indexName: 'ewan_home',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"请搜索关键字","hits_empty":"没有找到结果: ${query}","hits_stats":"找到${hits}条结果(用时${time}ms)"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ewanpm.github.io/2018/10/03/抽奖研究分析/">
+
+
+
+
+
+  <title>抽奖研究分析 | 寓言家</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?43156ff9085f8a3c0ec8ef149136726d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">寓言家</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://ewanpm.github.io/2018/10/03/抽奖研究分析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="寓言家">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="寓言家">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">抽奖研究分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-03T08:38:27+08:00">
+                2018-10-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/03/抽奖研究分析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/03/抽奖研究分析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/03/抽奖研究分析/" class="leancloud_visitors" data-flag-title="抽奖研究分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  865
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3min
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>只要是营销的场景，肯定逃不脱抽奖，研究好抽奖可以说是必修课之一，算法也是多种多样，这次以奖品的权重来抽奖。</p>
+<h2 id="奖品设置"><a href="#奖品设置" class="headerlink" title="奖品设置"></a>奖品设置</h2><p>奖品实体必须含有两个字段，一个用于区分的奖品名称/ID；一个奖品权重<br>请看表格，进行如下设置<br><a id="more"></a><br><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fvuqarzihej30bu02ddfn.jpg" alt=""><br>抽奖的逻辑可以用下面这张图表示<br><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fvu5uy3xl4j30jl072glh.jpg" alt=""></p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> class PrizeTest &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据Math.random()产生一个double型的随机数，判断每个奖品出现的概率</span></span><br><span class="line"><span class="comment">     * @param prizes</span></span><br><span class="line"><span class="comment">     * @return random：奖品列表prizes中的序列（prizes中的第random个就是抽中的奖品）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">int</span> getPrizeIndex(List&lt;Prize&gt; prizes) &#123;</span><br><span class="line">        <span class="built_in">int</span> <span class="built_in">random</span> = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">while</span>(<span class="built_in">random</span> &lt; <span class="number">0</span> ) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">//计算总权重</span></span><br><span class="line">                <span class="keyword">double</span> sumWeight = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span> (Prize p : prizes) &#123;</span><br><span class="line">                    sumWeight += p.getPrize_weight();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//产生随机数</span></span><br><span class="line">                <span class="keyword">double</span> randomNumber;</span><br><span class="line">                randomNumber = Math.<span class="built_in">random</span>();</span><br><span class="line"></span><br><span class="line">                <span class="comment">//根据随机数在所有奖品分布的区域并确定哪个名称里</span></span><br><span class="line">                <span class="keyword">double</span> d1 = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">double</span> d2 = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; prizes.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">                    d2 += Double.parseDouble(<span class="keyword">String</span>.valueOf(prizes.<span class="built_in">get</span>(i).getPrize_weight())) / sumWeight;</span><br><span class="line">                    <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</span><br><span class="line">                        d1 = <span class="number">0</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        d1 += Double.parseDouble(<span class="keyword">String</span>.valueOf(prizes.<span class="built_in">get</span>(i - <span class="number">1</span>).getPrize_weight())) / sumWeight;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (d1 &lt;= randomNumber &amp;&amp; randomNumber &lt; d2) &#123;</span><br><span class="line">                        <span class="built_in">random</span> = i;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                System.out.<span class="built_in">println</span>(<span class="string">"出错原因："</span> + e.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">random</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] agrs) &#123;</span><br><span class="line">        <span class="built_in">int</span> i = <span class="number">0</span>;</span><br><span class="line">        List&lt;Prize&gt; prizes = <span class="keyword">new</span> ArrayList&lt;Prize&gt;();</span><br><span class="line"></span><br><span class="line">        Prize p1 = <span class="keyword">new</span> Prize();</span><br><span class="line">        p1.setPrize_name(<span class="string">"名称1"</span>);</span><br><span class="line">        p1.setPrize_weight(<span class="number">1</span>);<span class="comment">//权重设置成1</span></span><br><span class="line">        prizes.<span class="built_in">add</span>(p1);</span><br><span class="line"></span><br><span class="line">        Prize p2 = <span class="keyword">new</span> Prize();</span><br><span class="line">        p2.setPrize_name(<span class="string">"名称2"</span>);</span><br><span class="line">        p2.setPrize_weight(<span class="number">2</span>);<span class="comment">//权重设置成2</span></span><br><span class="line">        prizes.<span class="built_in">add</span>(p2);</span><br><span class="line"></span><br><span class="line">        Prize p3 = <span class="keyword">new</span> Prize();</span><br><span class="line">        p3.setPrize_name(<span class="string">"名称3"</span>);</span><br><span class="line">        p3.setPrize_weight(<span class="number">3</span>);<span class="comment">//权重设置成3</span></span><br><span class="line">        prizes.<span class="built_in">add</span>(p3);</span><br><span class="line"></span><br><span class="line">        Prize p4 = <span class="keyword">new</span> Prize();</span><br><span class="line">        p4.setPrize_name(<span class="string">"名称4"</span>);</span><br><span class="line">        p4.setPrize_weight(<span class="number">4</span>);<span class="comment">//权重设置成4</span></span><br><span class="line">        prizes.<span class="built_in">add</span>(p4);</span><br><span class="line">        <span class="built_in">int</span>[] result=<span class="keyword">new</span> <span class="built_in">int</span>[prizes.<span class="built_in">size</span>()];</span><br><span class="line"></span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"开始.。。"</span>);</span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)<span class="comment">// 打印100个测试概率的准确性</span></span><br><span class="line">        &#123;</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"第"</span>+i+<span class="string">"次使用："</span>+prizes.<span class="built_in">get</span>(getPrizeIndex(prizes)).getPrize_name());</span><br><span class="line">            result[getPrizeIndex(prizes)]++;</span><br><span class="line">            System.out.<span class="built_in">println</span>(<span class="string">"--------------------------------"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"结束。。。"</span>);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"每家供应商的使用数量为："</span>);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"名称1："</span>+result[<span class="number">0</span>]);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"名称2："</span>+result[<span class="number">1</span>]);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"名称3："</span>+result[<span class="number">2</span>]);</span><br><span class="line">        System.out.<span class="built_in">println</span>(<span class="string">"名称4："</span>+result[<span class="number">3</span>]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> class Prize&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">String</span> prize_name;<span class="comment">//名称</span></span><br><span class="line">        <span class="keyword">private</span> <span class="built_in">int</span> prize_weight;<span class="comment">//权重</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">String</span> getPrize_name() &#123;</span><br><span class="line">            <span class="keyword">return</span> prize_name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> setPrize_name(<span class="keyword">String</span> prize_name) &#123;</span><br><span class="line">            <span class="keyword">this</span>.prize_name = prize_name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> getPrize_weight() &#123;</span><br><span class="line">            <span class="keyword">return</span> prize_weight;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> setPrize_weight(<span class="built_in">int</span> prize_weight) &#123;</span><br><span class="line">            <span class="keyword">this</span>.prize_weight = prize_weight;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打开终端，对PrizeTest进行编译，然后运行<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">javac </span>PrizeTest.<span class="keyword">java</span></span><br><span class="line"><span class="keyword">java </span>PrizeTest</span><br></pre></td></tr></table></figure></p>
+<h2 id="得出的结果"><a href="#得出的结果" class="headerlink" title="得出的结果"></a>得出的结果</h2><p>结束。。。<br>每个奖品名称的使用数量为：<br>名称1：9<br>名称2：26<br>名称3：25<br>名称4：40</p>
+<p>设置的奖品数量只有100，计算的结果基本符合预期，数字越大，越准确。</p>
+<h2 id="其他情况"><a href="#其他情况" class="headerlink" title="其他情况"></a>其他情况</h2><p>如果预想中奖率是100%，那么10个奖品只能抽奖10次，所以还要根据实际情况设置每种奖品数量和权重。<br>如果需要设置中奖率不为100%，可以添加一个“伪奖品”进行站位，为其设置权重，那么抽到这个“伪奖品”的概率就是不中奖的概率。<br>这个是在奖品充足的时候情况下，如果在抽奖活动中某个奖品抽完了，做个判断，即此奖品剩余数量为0，则重新抽取一次，一直到抽到其他还有剩余的奖项为止。</p>
+<p>参考的资料是要联动数据库的，这里做了一些简单的处理，理解核心业务逻辑。</p>
+<p>参考资料：<a href="https://blog.csdn.net/a46788304/article/details/65437754" target="_blank" rel="noopener">https://blog.csdn.net/a46788304/article/details/65437754</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/抽奖/" rel="tag"># 抽奖</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+      
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/07/微软开源Sketch2Code-草图变代码/" rel="next" title="微软开源Sketch2Code,草图变代码">
+                <i class="fa fa-chevron-left"></i> 微软开源Sketch2Code,草图变代码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/12/Hexo + GitHub搭建博客/" rel="prev" title="Hexo + Next主题 + GitHub搭建博客">
+                Hexo + Next主题 + GitHub搭建博客 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">寓言家</p>
+              <p class="site-description motion-element" itemprop="description">写点东西，留下一些足迹</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/EwanPM" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:ewanzheng2012@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/2656703853/profile?rightmod=1&wvr=6&mod=personinfo" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#奖品设置"><span class="nav-number">2.</span> <span class="nav-text">奖品设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法"><span class="nav-number">3.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#得出的结果"><span class="nav-number">4.</span> <span class="nav-text">得出的结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他情况"><span class="nav-number">5.</span> <span class="nav-text">其他情况</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">寓言家</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 Hexo 强力驱动</div>
+
+
+
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+     
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人</span>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: true,
+        notify: true,
+        appId: 'kFSOq8nB5wXJlUQJNpR9Mf3m-gzGzoHsz',
+        appKey: 'wWej8m4TRUsQ9gdJuUSXtJo3',
+        placeholder: '大宝贝儿，欢迎来吐槽',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("kFSOq8nB5wXJlUQJNpR9Mf3m-gzGzoHsz", "wWej8m4TRUsQ9gdJuUSXtJo3");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
